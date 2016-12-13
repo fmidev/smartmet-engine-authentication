@@ -236,7 +236,7 @@ bool Engine::authorize(const std::string& apikey,
     }
     else  // Unkown service, either there is a plugin programming error or no access tokens are
           // defined for this service
-      return true;
+      return !explicitGrantOnly;
   }
   catch (...)
   {
