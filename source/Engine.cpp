@@ -97,7 +97,9 @@ class Service
 
   bool addWildCard(const std::string& apikey);
 
-  AccessStatus resolveAccess(const std::string& apikey, const std::string& value) const;
+  AccessStatus resolveAccess(const std::string& apikey,
+                             const std::string& value,
+                             bool explicitGrantOnly = false) const;
 
  private:
   std::string itsName;
@@ -156,12 +158,14 @@ bool Service::addWildCard(const std::string& apikey)
   }
 }
 
-AccessStatus Service::resolveAccess(const std::string& apikey, const std::string& value) const
+AccessStatus Service::resolveAccess(const std::string& apikey,
+                                    const std::string& value,
+                                    bool explicitGrantOnly) const
 {
   try
   {
     // First check if this apikey has "wildcard" definition, it means universal access
-    if (itsWildCardApikeys.find(apikey) != itsWildCardApikeys.end())
+    if (!explicitGrantOnly && (itsWildCardApikeys.find(apikey) != itsWildCardApikeys.end()))
       return AccessStatus::WILDCARD_GRANT;
 
     // Next check if value is found in token definitions for this apikey
@@ -170,7 +174,7 @@ AccessStatus Service::resolveAccess(const std::string& apikey, const std::string
     if (it == itsTokenApikeyMapping.end())
     {
       // No such apikey defined for this service.
-      return AccessStatus::UNKNOWN_APIKEY;
+      return explicitGrantOnly ? AccessStatus::DENY : AccessStatus::UNKNOWN_APIKEY;
     }
     else
     {
@@ -199,7 +203,8 @@ Engine::Engine(const char* theConfigFile)
 
 bool Engine::authorize(const std::string& apikey,
                        const std::string& tokenvalue,
-                       const std::string& service) const
+                       const std::string& service,
+                       bool explicitGrantOnly) const
 {
   try
   {
@@ -207,7 +212,7 @@ bool Engine::authorize(const std::string& apikey,
     auto it = itsServices.find(service);
     if (it != itsServices.end())
     {
-      AccessStatus value_status = it->second.resolveAccess(apikey, tokenvalue);
+      AccessStatus value_status = it->second.resolveAccess(apikey, tokenvalue, explicitGrantOnly);
       switch (value_status)
       {
         case AccessStatus::UNKNOWN_APIKEY:

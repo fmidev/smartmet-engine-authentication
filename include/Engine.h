@@ -32,7 +32,8 @@ class Engine : public SmartMet::Spine::SmartMetEngine
   // Authorize a single value for given service
   bool authorize(const std::string& apikey,
                  const std::string& tokenvalue,
-                 const std::string& service) const;
+                 const std::string& service,
+                 bool explicitGrantOnly = false) const;
 
  private:
   // Rebuilds apikey service mappings
