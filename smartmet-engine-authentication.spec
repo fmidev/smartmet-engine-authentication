@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 17.1.4
+Version: 17.1.5
 Release: 1%{?dist}.fmi
 License: FMI
 Group: SmartMet/Engines
@@ -55,6 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Thu Jan  5 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.1.5-1.fmi
+- Added new authorize() parameter to require existence of token value (SOL-4614)
+
 * Wed Jan  4 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.1.4-1.fmi
 - Updated to use renamed SmartMet base libraries
 
