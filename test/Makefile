@@ -22,8 +22,8 @@ INCLUDES = \
 LIBS = \
 	../authentication.so \
 	-lsmartmet-spine \
-	-lsmartmet_gis \
-	-lsmartmet_newbase \
+	-lsmartmet-gis \
+	-lsmartmet-newbase \
 	-lgeos \
 	-lgdal \
 	-lboost_date_time \
