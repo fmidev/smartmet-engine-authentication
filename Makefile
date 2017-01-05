@@ -125,8 +125,7 @@ release: all
 profile: all
 
 configtest:
-	@echo Validating test/cnf/authentication.conf
-	@cfgvalidate -v test/cnf/authentication.conf
+	@if [ -x "$$(command -v cfgvalidate)" ]; then cfgvalidate -v test/cnf/authentication.conf; fi
 
 $(LIBFILE): $(OBJS)
 	$(CXX) $(CFLAGS) -shared -rdynamic -o $(LIBFILE) $(OBJS) $(LIBS)
