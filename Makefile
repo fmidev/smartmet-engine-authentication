@@ -155,13 +155,12 @@ objdir:
 	@mkdir -p $(objdir)
 
 rpm: clean
-	@if [ -e $(SPEC).spec ]; \
+	if [ -e $(SPEC).spec ]; \
 	then \
 	  mkdir -p $(rpmsourcedir) ; \
-	  tar -C ../../ -cf $(rpmsourcedir)/$(SPEC).tar engines/$(SUBNAME) ; \
-	  gzip -f $(rpmsourcedir)/$(SPEC).tar ; \
-	  TAR_OPTIONS=--wildcards rpmbuild -v -ta $(rpmsourcedir)/$(SPEC).tar.gz ; \
-	  rm -f $(rpmsourcedir)/$(SPEC).tar.gz ; \
+          tar -czvf $(rpmsourcedir)/$(SPEC).tar.gz --transform "s,^,engines/$(SPEC)/," * ; \
+          rpmbuild -ta $(rpmsourcedir)/$(SPEC).tar.gz ; \
+          rm -f $(rpmsourcedir)/$(SPEC).tar.gz ; \
 	else \
 	  echo $(rpmerr); \
 	fi;
