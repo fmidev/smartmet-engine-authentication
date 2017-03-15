@@ -354,7 +354,11 @@ void Engine::rebuildUpdateLoop()
       catch (...)
       {
         SmartMet::Spine::Exception exception(BCP, "Database exception!", NULL);
-        std::cout << exception.getStackTrace();
+
+        if (!exception.stackTraceDisabled())
+          std::cout << exception.getStackTrace();
+        else if (!exception.loggingDisabled())
+          std::cout << "Error: " << exception.what() << std::endl;
 
         // std::cout << std::string("Auth: Database exception thrown: '") + e.what() + "'"
         //          << std::endl;
