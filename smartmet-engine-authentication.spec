@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 17.3.15
+Version: 17.4.8
 Release: 1%{?dist}.fmi
 License: FMI
 Group: SmartMet/Engines
@@ -11,9 +11,9 @@ URL: https://github.com/fmidev/smartmet-engine-authentication
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: boost-devel
-BuildRequires: smartmet-library-spine-devel >= 17.3.15
-Requires: smartmet-server >= 17.3.15
-Requires: smartmet-library-spine >= 17.3.15
+BuildRequires: smartmet-library-spine-devel >= 17.4.8
+Requires: smartmet-server >= 17.4.7
+Requires: smartmet-library-spine >= 17.4.8
 Requires: boost-system
 Requires: boost-thread
 Provides: %{SPECNAME}
@@ -55,6 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Sat Apr  8 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.4.8-1.fmi
+- Simplified error reporting
+
 * Wed Mar 15 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.3.15-1.fmi
 - Recompiled since Spine::Exception changed
 

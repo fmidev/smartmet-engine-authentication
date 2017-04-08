@@ -1,7 +1,7 @@
 #include "Engine.h"
 
-#include <spine/Exception.h>
 #include <macgyver/StringConversion.h>
+#include <spine/Exception.h>
 
 #include <stdexcept>
 #include <utility>
@@ -354,14 +354,7 @@ void Engine::rebuildUpdateLoop()
       catch (...)
       {
         SmartMet::Spine::Exception exception(BCP, "Database exception!", NULL);
-
-        if (!exception.stackTraceDisabled())
-          std::cout << exception.getStackTrace();
-        else if (!exception.loggingDisabled())
-          std::cout << "Error: " << exception.what() << std::endl;
-
-        // std::cout << std::string("Auth: Database exception thrown: '") + e.what() + "'"
-        //          << std::endl;
+        exception.printError();
       }
 
       for (int i = 0; (!itsShutdownRequested && i < itsConfig.updateIntervalSeconds); i++)
