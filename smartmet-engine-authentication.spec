@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 17.4.8
+Version: 17.8.28
 Release: 1%{?dist}.fmi
 License: FMI
 Group: SmartMet/Engines
@@ -13,9 +13,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost-devel
-BuildRequires: smartmet-library-spine-devel >= 17.4.8
-Requires: smartmet-server >= 17.4.7
-Requires: smartmet-library-spine >= 17.4.8
+BuildRequires: smartmet-library-spine-devel >= 17.8.28
+Requires: smartmet-server >= 17.8.28
+Requires: smartmet-library-spine >= 17.8.28
 Requires: boost-system
 Requires: boost-thread
 Provides: %{SPECNAME}
@@ -57,6 +57,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Mon Aug 28 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.8.28-1.fmi
+- Upgrade to boost 1.65
+
 * Sat Apr  8 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.4.8-1.fmi
 - Simplified error reporting
 
