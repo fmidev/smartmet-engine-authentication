@@ -3,9 +3,9 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 17.8.28
+Version: 17.9.13
 Release: 1%{?dist}.fmi
-License: FMI
+License: MIT
 Group: SmartMet/Engines
 URL: https://github.com/fmidev/smartmet-engine-authentication
 Source0: %{name}.tar.gz
@@ -13,9 +13,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost-devel
-BuildRequires: smartmet-library-spine-devel >= 17.8.28
+BuildRequires: smartmet-library-spine-devel >= 17.9.13
 Requires: smartmet-server >= 17.8.28
-Requires: smartmet-library-spine >= 17.8.28
+Requires: smartmet-library-spine >= 17.9.13
 Requires: boost-system
 Requires: boost-thread
 Provides: %{SPECNAME}
@@ -57,6 +57,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Wed Sep 13 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.9.13-1.fmi
+- Changed license to MIT
+
 * Mon Aug 28 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.8.28-1.fmi
 - Upgrade to boost 1.65
 
