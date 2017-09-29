@@ -14,10 +14,12 @@ BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost-devel
 BuildRequires: smartmet-library-spine-devel >= 17.9.13
+BuildRequires: libpqxx-devel
 Requires: smartmet-server >= 17.8.28
 Requires: smartmet-library-spine >= 17.9.13
 Requires: boost-system
 Requires: boost-thread
+Requires: libpqxx
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
