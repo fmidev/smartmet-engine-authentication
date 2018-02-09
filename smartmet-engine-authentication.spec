@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 18.1.15
+Version: 18.2.9
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -13,10 +13,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost-devel
-BuildRequires: smartmet-library-spine-devel >= 18.1.15
+BuildRequires: smartmet-library-spine-devel >= 18.2.9
 BuildRequires: libpqxx-devel
 Requires: smartmet-server >= 17.11.10
-Requires: smartmet-library-spine >= 18.1.15
+Requires: smartmet-library-spine >= 18.2.9
 Requires: boost-system
 Requires: boost-thread
 Requires: libpqxx
@@ -59,6 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Fri Feb  9 2018 Mika Heiskanen <mika.heiskanen@fmi.fi> - 18.2.9-1.fmi
+- Repackaged since base class SmartMetEngine size changed
+
 * Mon Jan 15 2018 Mika Heiskanen <mika.heiskanen@fmi.fi> - 18.1.15-1.fmi
 - Updated pqxx dependency
 
