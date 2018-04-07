@@ -462,9 +462,7 @@ void Engine::rebuildMappings()
   }
 }
 
-Engine::~Engine()
-{
-}
+Engine::~Engine() {}
 
 }  // namespace Authentication
 }  // namespace Engine

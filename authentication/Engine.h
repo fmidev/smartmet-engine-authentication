@@ -3,10 +3,10 @@
 #include <spine/SmartMetEngine.h>
 #include <spine/Thread.h>
 
-#include <string>
-#include <vector>
 #include <map>
 #include <set>
+#include <string>
+#include <vector>
 
 #include "Config.h"
 
