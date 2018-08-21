@@ -217,15 +217,8 @@ bool Engine::authorize(const std::string& apikey,
       {
         case AccessStatus::UNKNOWN_APIKEY:
           // Unknown apikey for this aservice
-          if (itsConfig.defaultAccessAllow)
-          {
-            // Default access policy is "allow", unknown apikey is let through
-            return true;
-          }
-          else
-          {
-            return false;
-          }
+          // Default access policy is "allow", unknown apikey is let through
+          return itsConfig.defaultAccessAllow;
         case AccessStatus::DENY:
           return false;
         case AccessStatus::GRANT:
@@ -266,15 +259,8 @@ bool Engine::authorize(const std::string& apikey,
           case AccessStatus::UNKNOWN_APIKEY:
           {
             // Unknown apikey for this aservice
-            if (itsConfig.defaultAccessAllow)
-            {
-              // Default access policy is "allow", unknown apikey is let through
-              return true;
-            }
-            else
-            {
-              return false;
-            }
+            // Default access policy is "allow", unknown apikey is let through
+            return itsConfig.defaultAccessAllow;
           }
           case AccessStatus::DENY:
           {
