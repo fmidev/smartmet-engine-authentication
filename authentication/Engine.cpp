@@ -196,10 +196,7 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
   }
 }
 
-Engine::Engine(const char* theConfigFile)
-    : SmartMetEngine(), itsConfig(theConfigFile), itsActiveThreadCount(0)
-{
-}
+Engine::Engine(const char* theConfigFile) : itsConfig(theConfigFile), itsActiveThreadCount(0) {}
 
 bool Engine::authorize(const std::string& apikey,
                        const std::string& tokenvalue,
