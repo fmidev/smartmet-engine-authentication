@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 18.7.25
+Version: 18.8.21
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -14,10 +14,10 @@ BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost-devel
-BuildRequires: smartmet-library-spine-devel >= 18.7.23
+BuildRequires: smartmet-library-spine-devel >= 18.8.20
 BuildRequires: libpqxx-devel
-Requires: smartmet-server >= 18.7.25
-Requires: smartmet-library-spine >= 18.7.23
+Requires: smartmet-server >= 18.8.8
+Requires: smartmet-library-spine >= 18.8.20
 Requires: boost-system
 Requires: boost-thread
 Requires: libpqxx
@@ -60,6 +60,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Tue Aug 21 2018 Mika Heiskanen <mika.heiskanen@fmi.fi> - 18.8.21-1.fmi
+- Silenced CodeChecker warnings
+
 * Wed Jul 25 2018 Mika Heiskanen <mika.heiskanen@fmi.fi> - 18.7.25-1.fmi
 - Prefer nullptr over NULL
 

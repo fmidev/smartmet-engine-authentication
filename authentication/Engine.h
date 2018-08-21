@@ -1,14 +1,13 @@
 #pragma once
 
+#include "Config.h"
+#include <boost/move/unique_ptr.hpp>
 #include <spine/SmartMetEngine.h>
 #include <spine/Thread.h>
-
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
-
-#include "Config.h"
 
 namespace SmartMet
 {
@@ -49,7 +48,7 @@ class Engine : public SmartMet::Spine::SmartMetEngine
 
   mutable SmartMet::Spine::MutexType itsMutex;
 
-  std::unique_ptr<boost::thread> itsUpdateThread;
+  boost::movelib::unique_ptr<boost::thread> itsUpdateThread;
 
   int itsActiveThreadCount;
 

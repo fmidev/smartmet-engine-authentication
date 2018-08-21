@@ -291,7 +291,8 @@ void Engine::init()
   {
     rebuildMappings();
 
-    itsUpdateThread.reset(new boost::thread(boost::bind(&Engine::rebuildUpdateLoop, this)));
+    itsUpdateThread =
+        boost::movelib::make_unique<boost::thread>(boost::bind(&Engine::rebuildUpdateLoop, this));
   }
   catch (...)
   {
