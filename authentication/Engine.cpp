@@ -441,7 +441,7 @@ void Engine::rebuildMappings()
   }
 }
 
-Engine::~Engine() {}
+Engine::~Engine() = default;
 
 }  // namespace Authentication
 }  // namespace Engine
