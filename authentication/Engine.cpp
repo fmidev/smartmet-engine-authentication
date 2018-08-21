@@ -32,7 +32,7 @@ enum class AccessStatus
 class Token
 {
  public:
-  Token(const std::string& name) : itsName(name){};
+  Token(std::string name) : itsName(std::move(name)){};
 
   bool addValue(const std::string& value) const;  // Constness here is hack, because std::set only
                                                   // has const_iterators
@@ -89,7 +89,7 @@ struct WildCard
 class Service
 {
  public:
-  Service(const std::string& name) : itsName(name){};
+  Service(std::string name) : itsName(std::move(name)) {}
 
   bool addToken(const std::string& apikey, const Token& token);
 
