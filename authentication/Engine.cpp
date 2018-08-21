@@ -176,19 +176,17 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
       // No such apikey defined for this service.
       return explicitGrantOnly ? AccessStatus::DENY : AccessStatus::UNKNOWN_APIKEY;
     }
-    else
+
+    auto& tokens = it->second;
+
+    // See if value is defined in one of the token sets:
+    for (const auto& token : tokens)
     {
-      auto& tokens = it->second;
-
-      // See if value is defined in one of the token sets:
-      for (const auto& token : tokens)
-      {
-        if (token.hasValue(value))
-          return AccessStatus::GRANT;
-      }
-
-      return AccessStatus::DENY;
+      if (token.hasValue(value))
+        return AccessStatus::GRANT;
     }
+
+    return AccessStatus::DENY;
   }
   catch (...)
   {
@@ -244,44 +242,42 @@ bool Engine::authorize(const std::string& apikey,
     SmartMet::Spine::ReadLock lock(itsMutex);
 
     auto it = itsServices.find(service);
-    if (it != itsServices.end())
-    {
-      for (const std::string& value : tokenvalues)
-      {
-        // Let through if all tokens are valid
-        AccessStatus value_status = it->second.resolveAccess(apikey, value);
+    if (it == itsServices.end())
+      return true;  // Unknown service, let through
 
-        switch (value_status)
+    for (const std::string& value : tokenvalues)
+    {
+      // Let through if all tokens are valid
+      AccessStatus value_status = it->second.resolveAccess(apikey, value);
+
+      switch (value_status)
+      {
+        case AccessStatus::UNKNOWN_APIKEY:
         {
-          case AccessStatus::UNKNOWN_APIKEY:
-          {
-            // Unknown apikey for this aservice
-            // Default access policy is "allow", unknown apikey is let through
-            return itsConfig.defaultAccessAllow;
-          }
-          case AccessStatus::DENY:
-          {
-            // Disallowed value encountered, deny access;
-            return false;
-          }
-          case AccessStatus::GRANT:
-          {
-            // Allowed value, continue to the next
-            continue;
-          }
-          case AccessStatus::WILDCARD_GRANT:
-          {
-            // This apikey has universal access, no reason to loop through all token values
-            return true;
-          }
+          // Unknown apikey for this aservice
+          // Default access policy is "allow", unknown apikey is let through
+          return itsConfig.defaultAccessAllow;
+        }
+        case AccessStatus::DENY:
+        {
+          // Disallowed value encountered, deny access;
+          return false;
+        }
+        case AccessStatus::GRANT:
+        {
+          // Allowed value, continue to the next
+          continue;
+        }
+        case AccessStatus::WILDCARD_GRANT:
+        {
+          // This apikey has universal access, no reason to loop through all token values
+          return true;
         }
       }
-
-      // All tokens valid
-      return true;
     }
-    else
-      return true;  // Unknown service, let through
+
+    // All tokens valid
+    return true;
   }
   catch (...)
   {
