@@ -34,7 +34,8 @@ LIBS = \
 	-lboost_timer \
 	-lboost_system \
 	`pkg-config --libs libconfig++` \
-	-lbz2 -ljpeg -lpng -lz
+	-lbz2 -ljpeg -lpng -lz \
+	-lpthread
 
 all: $(PROG)
 clean:
