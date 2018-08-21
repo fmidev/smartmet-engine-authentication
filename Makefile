@@ -82,9 +82,9 @@ LIBS = -L$(libdir) \
 	-lsmartmet-spine \
 	-lboost_thread \
 	-lboost_system \
-	-lpthread \
 	-lpqxx \
-	-lconfig++ 
+	-lconfig++ \
+	-lpthread
 
 
 # What to install
