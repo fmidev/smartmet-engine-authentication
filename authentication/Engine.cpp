@@ -32,7 +32,7 @@ enum class AccessStatus
 class Token
 {
  public:
-  Token(std::string name) : itsName(std::move(name)){};
+  explicit Token(std::string name) : itsName(std::move(name)) {}
 
   bool addValue(const std::string& value) const;  // Constness here is hack, because std::set only
                                                   // has const_iterators
@@ -89,7 +89,7 @@ struct WildCard
 class Service
 {
  public:
-  Service(std::string name) : itsName(std::move(name)) {}
+  explicit Service(std::string name) : itsName(std::move(name)) {}
 
   bool addToken(const std::string& apikey, const Token& token);
 
@@ -421,8 +421,8 @@ void Engine::rebuildMappings()
       auto tokenSetIt = newTokens.find(service);
       if (tokenSetIt != newTokens.end())
       {
-        auto tokenIt =
-            tokenSetIt->second.find(token);  // Find the token object for this particular token name
+        auto tokenIt = tokenSetIt->second.find(
+            Token(token));  // Find the token object for this particular token name
         if (tokenIt == tokenSetIt->second.end())
           continue;                             // This is misconfiguration in the
                                                 // database
