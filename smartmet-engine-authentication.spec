@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 18.8.21
+Version: 18.9.10
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -60,6 +60,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Mon Sep 10 2018 Mika Heiskanen <mika.heiskanen@fmi.fi> - 18.9.10-1.fmi
+- Silenced the last CodeChecker warning
+
 * Tue Aug 21 2018 Mika Heiskanen <mika.heiskanen@fmi.fi> - 18.8.21-1.fmi
 - Silenced CodeChecker warnings
 
