@@ -121,12 +121,9 @@ bool Service::addToken(const std::string& apikey, const Token& token)
       // No such apikey yet
       return itsTokenApikeyMapping.insert(std::make_pair(apikey, std::set<Token>{token})).second;
     }
-    else
-    {
-      auto& tokenSet = it->second;
 
-      return tokenSet.insert(token).second;
-    }
+    auto& tokenSet = it->second;
+    return tokenSet.insert(token).second;
   }
   catch (...)
   {
