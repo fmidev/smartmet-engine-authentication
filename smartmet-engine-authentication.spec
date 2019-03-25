@@ -24,6 +24,16 @@ Requires: libpqxx
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
+#TestRequires: bzip2-devel
+#TestRequires: gcc-c++
+#TestRequires: gdal-devel
+#TestRequires: make
+#TestRequires: libconfig-devel
+#TestRequires: libjpeg-turbo-devel
+#TestRequires: libpng-devel
+#TestRequires: smartmet-library-regression
+#TestRequires: smartmet-library-spine-devel >= 18.8.20
+#TestRequires: zlib-devel
 
 %description
 SmartMet Apikey Authorization engine
