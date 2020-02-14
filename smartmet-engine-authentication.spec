@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 19.9.26
+Version: 20.2.14
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -14,10 +14,10 @@ BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost-devel
-BuildRequires: smartmet-library-spine-devel >= 19.9.26
+BuildRequires: smartmet-library-spine-devel >= 20.2.13
 BuildRequires: libpqxx-devel
-Requires: smartmet-server >= 19.9.26
-Requires: smartmet-library-spine >= 19.9.26
+Requires: smartmet-server >= 20.2.13
+Requires: smartmet-library-spine >= 20.2.13
 Requires: boost-system
 Requires: boost-thread
 Requires: libpqxx
@@ -32,7 +32,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: libjpeg-turbo-devel
 #TestRequires: libpng-devel
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-devel >= 19.9.26
+#TestRequires: smartmet-library-spine-devel >= 20.2.13
 #TestRequires: zlib-devel
 
 %description
@@ -70,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Fri Feb 14 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.2.14-1.fmi
+- Upgrade to pgdg12
+
 * Thu Sep 26 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.9.26-1.fmi
 - Added support for ASAN & TSAN builds
 

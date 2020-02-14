@@ -21,9 +21,9 @@ CC = g++
 CFLAGS = -DUNIX -O0 -g $(FLAGS) -Wno-write-strings
 
 INCLUDES = \
-	-I ../authentication \
-	-I /usr/include/smartmet \
-	-I /usr/include/smartmet/newbase \
+	-I../authentication \
+	-I/usr/include/smartmet \
+	-I/usr/include/smartmet/newbase \
 	`pkg-config --cflags libconfig++`
 
 LIBS = \
@@ -31,8 +31,6 @@ LIBS = \
 	-lsmartmet-spine \
 	-lsmartmet-gis \
 	-lsmartmet-newbase \
-	-lgeos \
-	-lgdal \
 	-lboost_date_time \
 	-lboost_iostreams \
 	-lboost_filesystem \
