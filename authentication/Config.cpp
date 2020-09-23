@@ -1,5 +1,5 @@
 #include "Config.h"
-#include <spine/Exception.h>
+#include <macgyver/Exception.h>
 
 namespace SmartMet
 {
@@ -25,7 +25,7 @@ Config::Config(const std::string& configFile) : ConfigBase(configFile)
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 

@@ -1,7 +1,7 @@
 #include "Engine.h"
 
 #include <macgyver/StringConversion.h>
-#include <spine/Exception.h>
+#include <macgyver/Exception.h>
 
 #include <stdexcept>
 #include <utility>
@@ -127,7 +127,7 @@ bool Service::addToken(const std::string& apikey, const Token& token)
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -139,7 +139,7 @@ bool Service::addTokenSet(const std::string& apikey, const std::set<Token>& toke
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -151,7 +151,7 @@ bool Service::addWildCard(const std::string& apikey)
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -187,7 +187,7 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -225,7 +225,7 @@ bool Engine::authorize(const std::string& apikey,
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -278,7 +278,7 @@ bool Engine::authorize(const std::string& apikey,
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -293,7 +293,7 @@ void Engine::init()
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -313,7 +313,7 @@ void Engine::shutdown()
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -330,7 +330,7 @@ void Engine::rebuildUpdateLoop()
       }
       catch (...)
       {
-        SmartMet::Spine::Exception exception(BCP, "Database exception!", nullptr);
+        Fmi::Exception exception(BCP, "Database exception!", nullptr);
         exception.printError();
       }
 
@@ -341,7 +341,7 @@ void Engine::rebuildUpdateLoop()
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 
@@ -435,7 +435,7 @@ void Engine::rebuildMappings()
   }
   catch (...)
   {
-    throw SmartMet::Spine::Exception::Trace(BCP, "Operation failed!");
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
 

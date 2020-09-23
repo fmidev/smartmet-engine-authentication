@@ -145,6 +145,7 @@ int main(void)
   opts.parseConfig();
 
   SmartMet::Spine::Reactor reactor(opts);
+  reactor.init();
   authengine = reinterpret_cast<SmartMet::Engine::Authentication::Engine *>(
       reactor.getSingleton("Authentication", NULL));
 

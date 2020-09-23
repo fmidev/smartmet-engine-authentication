@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 20.8.21
+Version: 20.9.23
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -14,10 +14,10 @@ BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost169-devel
-BuildRequires: smartmet-library-spine-devel >= 20.8.21
+BuildRequires: smartmet-library-spine-devel >= 20.9.23
 BuildRequires: libpqxx-devel
-Requires: smartmet-server >= 20.8.21
-Requires: smartmet-library-spine >= 20.8.21
+Requires: smartmet-server >= 20.9.23
+Requires: smartmet-library-spine >= 20.9.23
 Requires: boost169-system
 Requires: boost169-thread
 Requires: libpqxx
@@ -32,7 +32,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: libjpeg-turbo-devel
 #TestRequires: libpng-devel
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-devel >= 20.8.21
+#TestRequires: smartmet-library-spine-devel >= 20.9.23
 #TestRequires: zlib-devel
 
 %description
@@ -70,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Wed Sep 23 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.9.23-1.fmi
+- Use Fmi::Exception instead of Spine::Exception
+
 * Fri Aug 21 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.21-1.fmi
 - Upgrade to fmt 6.2
 
