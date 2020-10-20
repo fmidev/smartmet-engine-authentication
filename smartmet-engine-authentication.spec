@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 20.9.23
+Version: 20.10.20
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -28,7 +28,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: gdal-devel
 #TestRequires: make
-#TestRequires: libconfig-devel
+#TestRequires: libconfig-devel >= 1.7.2
 #TestRequires: libjpeg-turbo-devel
 #TestRequires: libpng-devel
 #TestRequires: smartmet-library-regression
@@ -70,6 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Tue Oct 20 2020 Andris Pavenis <andris.pavenis@fmi.fi> - 20.10.20-1.fmi
+- Rebuild due to libconfig upgrade to version 1.7.2
+
 * Wed Sep 23 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.9.23-1.fmi
 - Use Fmi::Exception instead of Spine::Exception
 
