@@ -1,38 +1,14 @@
 PROG = $(patsubst %.cpp,%,$(wildcard *Test.cpp))
 
-FLAGS = -std=c++11 -Wall -W -Wno-unused-parameter
+REQUIRES =configpp
 
-EXTRAFLAGS = -Werror -pedantic -Wpointer-arith -Wcast-qual \
-	-Wcast-align -Wconversion -Winline \
-	-Wctor-dtor-privacy -Wnon-virtual-dtor -Wno-pmf-conversions \
-	-Wsign-promo -Wchar-subscripts -Wold-style-cast \
-	-Wshadow -Woverloaded-virtual
-
-DIFFICULTFLAGS = -Weffc++ -Wunreachable-code -Wredundant-decls
-
-ifeq ($(TSAN), yes)
-  FLAGS += -fsanitize=thread
-endif
-ifeq ($(ASAN), yes)
-  FLAGS += -fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=undefined -fsanitize-address-use-after-scope
-endif
-
-CC = g++
+include $(shell echo $${PREFIX-/usr})/share/smartmet/devel/makefile.inc
 CFLAGS = -DUNIX -O0 -g $(FLAGS) -Wno-write-strings
-
-# Boost 1.69
-
-ifneq "$(wildcard /usr/include/boost169)" ""
-  INCLUDES += -isystem /usr/include/boost169
-  LIBS += -L/usr/lib64/boost169
-endif
-
 
 INCLUDES += \
 	-I../authentication \
 	-I/usr/include/smartmet \
-	-I/usr/include/smartmet/newbase \
-	`pkg-config --cflags libconfig++`
+	-I/usr/include/smartmet/newbase
 
 LIBS += \
 	../authentication.so \
@@ -46,7 +22,7 @@ LIBS += \
 	-lboost_thread \
 	-lboost_timer \
 	-lboost_system \
-	`pkg-config --libs libconfig++` \
+	$(CONFIGPP_LIBS) \
 	-lbz2 -ljpeg -lpng -lz \
 	-lpthread
 
