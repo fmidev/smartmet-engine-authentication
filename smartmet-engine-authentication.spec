@@ -3,36 +3,43 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 20.10.20
+Version: 20.12.15
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
 URL: https://github.com/fmidev/smartmet-engine-authentication
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+%if 0%{rhel} >= 8
+BuildRequires: libpqxx-devel >= 1:7.0
+Requires: libpqxx >= 1:7.0
+%else
+BuildRequires: libpqxx-devel < 1:6.0
+Requires: libpqxx < 1:6.0
+%endif
+
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: boost169-devel
-BuildRequires: smartmet-library-spine-devel >= 20.9.23
-BuildRequires: libpqxx-devel
-Requires: smartmet-server >= 20.9.23
-Requires: smartmet-library-spine >= 20.9.23
+BuildRequires: smartmet-library-spine-devel >= 20.12.15
+Requires: smartmet-server >= 20.10.28
+Requires: smartmet-library-spine >= 20.12.15
 Requires: boost169-system
 Requires: boost169-thread
-Requires: libpqxx
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: bzip2-devel
 #TestRequires: gcc-c++
-#TestRequires: gdal-devel
+#TestRequires: gdal12-devel
 #TestRequires: make
 #TestRequires: libconfig-devel >= 1.7.2
 #TestRequires: libjpeg-turbo-devel
 #TestRequires: libpng-devel
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-devel >= 20.9.23
+#TestRequires: smartmet-library-spine-devel >= 20.12.15
 #TestRequires: zlib-devel
 
 %description
@@ -70,6 +77,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Tue Dec 15 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.12.15-1.fmi
+- Upgrade to pgdg12
+
 * Tue Oct 20 2020 Andris Pavenis <andris.pavenis@fmi.fi> - 20.10.20-1.fmi
 - Rebuild due to libconfig upgrade to version 1.7.2
 
