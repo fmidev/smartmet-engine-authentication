@@ -11,33 +11,24 @@ URL: https://github.com/fmidev/smartmet-engine-authentication
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if 0%{rhel} >= 8
-BuildRequires: libpqxx-devel >= 1:7.0
-Requires: libpqxx >= 1:7.0
-%else
-BuildRequires: libpqxx-devel < 1:6.0
-Requires: libpqxx < 1:6.0
-%endif
-
-BuildRequires: rpm-build
-BuildRequires: gcc-c++
-BuildRequires: make
 BuildRequires: boost169-devel
+BuildRequires: gcc-c++
+BuildRequires: libpqxx-devel < 1:7.0
+BuildRequires: make
+BuildRequires: rpm-build
 BuildRequires: smartmet-library-spine-devel >= 20.12.15
-Requires: smartmet-server >= 20.10.28
-Requires: smartmet-library-spine >= 20.12.15
 Requires: boost169-system
 Requires: boost169-thread
+Requires: libpqxx < 1:7.0
+Requires: smartmet-library-spine >= 20.12.15
+Requires: smartmet-server >= 20.10.28
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: bzip2-devel
 #TestRequires: gcc-c++
-#TestRequires: gdal12-devel
 #TestRequires: make
 #TestRequires: libconfig-devel >= 1.7.2
-#TestRequires: libjpeg-turbo-devel
-#TestRequires: libpng-devel
 #TestRequires: smartmet-library-regression
 #TestRequires: smartmet-library-spine-devel >= 20.12.15
 #TestRequires: zlib-devel
