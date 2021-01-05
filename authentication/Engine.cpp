@@ -1,7 +1,7 @@
 #include "Engine.h"
 
-#include <macgyver/StringConversion.h>
 #include <macgyver/Exception.h>
+#include <macgyver/StringConversion.h>
 
 #include <stdexcept>
 #include <utility>
@@ -16,7 +16,7 @@ namespace Engine
 {
 namespace Authentication
 {
-#define WILDCARD_IDENTIFIER "*"
+const std::string WILDCARD_IDENTIFIER = "*";
 
 // Enum to signify access resolution status
 enum class AccessStatus
@@ -174,7 +174,7 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
       return explicitGrantOnly ? AccessStatus::DENY : AccessStatus::UNKNOWN_APIKEY;
     }
 
-    auto& tokens = it->second;
+    const auto& tokens = it->second;
 
     // See if value is defined in one of the token sets:
     for (const auto& token : tokens)
