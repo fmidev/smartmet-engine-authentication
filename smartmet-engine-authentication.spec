@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 20.12.15
+Version: 21.1.14
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -16,12 +16,12 @@ BuildRequires: gcc-c++
 BuildRequires: libpqxx-devel < 1:7.0
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 20.12.15
+BuildRequires: smartmet-library-spine-devel >= 21.1.14
 Requires: boost169-system
 Requires: boost169-thread
 Requires: libpqxx < 1:7.0
-Requires: smartmet-library-spine >= 20.12.15
-Requires: smartmet-server >= 20.10.28
+Requires: smartmet-library-spine >= 21.1.14
+Requires: smartmet-server >= 21.1.14
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
@@ -30,7 +30,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: make
 #TestRequires: libconfig-devel >= 1.7.2
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-devel >= 20.12.15
+#TestRequires: smartmet-library-spine-devel >= 21.1.14
 #TestRequires: zlib-devel
 
 %description
@@ -68,6 +68,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Thu Jan 14 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.14-1.fmi
+- Repackaged smartmet to resolve debuginfo issues
+
 * Tue Dec 15 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.12.15-1.fmi
 - Upgrade to pgdg12
 
