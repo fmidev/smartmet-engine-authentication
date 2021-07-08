@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 21.1.14
+Version: 21.7.8
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -13,13 +13,11 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: boost169-devel
 BuildRequires: gcc-c++
-BuildRequires: libpqxx-devel < 1:7.0
 BuildRequires: make
 BuildRequires: rpm-build
 BuildRequires: smartmet-library-spine-devel >= 21.1.14
 Requires: boost169-system
 Requires: boost169-thread
-Requires: libpqxx < 1:7.0
 Requires: smartmet-library-spine >= 21.1.14
 Requires: smartmet-server >= 21.1.14
 Provides: %{SPECNAME}
@@ -32,6 +30,19 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: smartmet-library-regression
 #TestRequires: smartmet-library-spine-devel >= 21.1.14
 #TestRequires: zlib-devel
+
+%if %{defined el7}
+Requires: libpqxx < 1:7.0
+BuildRequires: libpqxx-devel < 1:7.0
+%else
+%if %{defined el8}
+Requires: libpqxx >= 1:7.0
+BuildRequires: libpqxx-devel >= 1:7.0
+%else
+Requires: libpqxx
+BuildRequires: libpqxx-devel
+%endif
+%endif
 
 %description
 SmartMet Apikey Authorization engine
@@ -68,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Thu Jul  8 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.7.8-1.fmi
+- Use libpqxx7 for RHEL8
+
 * Thu Jan 14 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.14-1.fmi
 - Repackaged smartmet to resolve debuginfo issues
 
