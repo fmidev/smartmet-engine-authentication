@@ -1,12 +1,13 @@
 #include "Engine.h"
 
 #include <macgyver/Exception.h>
+#include <macgyver/PostgreSQLConnection.h>
 #include <macgyver/StringConversion.h>
 
 #include <stdexcept>
 #include <utility>
 
-#include <pqxx/pqxx>
+//#include <pqxx/pqxx>
 
 #include <stdexcept>
 
@@ -347,21 +348,27 @@ void Engine::rebuildUpdateLoop()
 
 void Engine::rebuildMappings()
 {
+  using namespace Fmi::Database;
   try
   {
-    std::string connection_string = "host=" + itsConfig.dBHost + " dbname=" + itsConfig.database +
-                                    " user=" + itsConfig.user + " password=" + itsConfig.password +
-                                    " port=" + Fmi::to_string(itsConfig.port);
-    pqxx::connection conn(connection_string);
-    pqxx::work work(conn);
+    PostgreSQLConnectionOptions opt;
+    opt.host = itsConfig.dBHost;
+    opt.port = itsConfig.port;
+    opt.database = itsConfig.database;
+    opt.username = itsConfig.user;
+    opt.password = itsConfig.password;
+
+    PostgreSQLConnection conn(opt);
 
     std::string query;
     pqxx::result res;
 
+    auto transaction = conn.transaction();
+
     // Get token definitions
     query =
         "SELECT service,token,value from " + itsConfig.schema + "." + itsConfig.tokenTable + ";";
-    res = work.exec(query);
+    res = transaction->execute(query);
 
     std::map<std::string, Service> newServices;
     std::map<std::string, std::set<Token>> newTokens;
@@ -390,7 +397,7 @@ void Engine::rebuildMappings()
     // Construct Service objects
     query =
         "SELECT apikey,service,token from " + itsConfig.schema + "." + itsConfig.authTable + ";";
-    res = work.exec(query);
+    res = transaction->execute(query);
 
     for (auto row : res)
     {
