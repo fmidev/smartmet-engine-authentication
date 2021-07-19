@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 21.7.8
+Version: 21.7.19
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -79,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Mon Jul 19 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.7.19-1.fmi
+- Use Fmi::Database::PostgreSQLConnection
+
 * Thu Jul  8 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.7.8-1.fmi
 - Use libpqxx7 for RHEL8
 
