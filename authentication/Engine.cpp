@@ -1,9 +1,8 @@
 #include "Engine.h"
-
 #include <macgyver/Exception.h>
 #include <macgyver/PostgreSQLConnection.h>
 #include <macgyver/StringConversion.h>
-
+#include <spine/Reactor.h>
 #include <stdexcept>
 #include <utility>
 
@@ -323,7 +322,7 @@ void Engine::rebuildUpdateLoop()
   try
   {
     itsActiveThreadCount++;
-    while (!itsShutdownRequested)
+    while (!Spine::Reactor::isShuttingDown())
     {
       try
       {
@@ -335,7 +334,8 @@ void Engine::rebuildUpdateLoop()
         exception.printError();
       }
 
-      for (int i = 0; (!itsShutdownRequested && i < itsConfig.updateIntervalSeconds); i++)
+      for (int i = 0; (!Spine::Reactor::isShuttingDown() && i < itsConfig.updateIntervalSeconds);
+           i++)
         boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
     }
     itsActiveThreadCount--;

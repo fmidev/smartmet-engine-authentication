@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 21.7.19
+Version: 21.8.17
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -15,11 +15,11 @@ BuildRequires: boost169-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 21.1.14
+BuildRequires: smartmet-library-spine-devel >= 21.8.17
 Requires: boost169-system
 Requires: boost169-thread
-Requires: smartmet-library-spine >= 21.1.14
-Requires: smartmet-server >= 21.1.14
+Requires: smartmet-library-spine >= 21.8.17
+Requires: smartmet-server >= 21.6.3
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
@@ -28,7 +28,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: make
 #TestRequires: libconfig-devel >= 1.7.2
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-devel >= 21.1.14
+#TestRequires: smartmet-library-spine-devel >= 21.8.17
 #TestRequires: zlib-devel
 
 %if %{defined el7}
@@ -36,8 +36,8 @@ Requires: libpqxx < 1:7.0
 BuildRequires: libpqxx-devel < 1:7.0
 %else
 %if %{defined el8}
-Requires: libpqxx >= 1:7.0
-BuildRequires: libpqxx-devel >= 1:7.0
+Requires: libpqxx >= 5.0.1
+BuildRequires: libpqxx-devel >= 5.0.1
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
@@ -79,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Tue Aug 17 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.8.17-1.fmi
+- Use latest interface for shutting downg
+
 * Mon Jul 19 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.7.19-1.fmi
 - Use Fmi::Database::PostgreSQLConnection
 
