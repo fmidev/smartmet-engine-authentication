@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 21.8.17
+Version: 21.8.31
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -15,10 +15,10 @@ BuildRequires: boost169-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 21.8.17
+BuildRequires: smartmet-library-spine-devel >= 21.8.30
 Requires: boost169-system
 Requires: boost169-thread
-Requires: smartmet-library-spine >= 21.8.17
+Requires: smartmet-library-spine >= 21.8.30
 Requires: smartmet-server >= 21.6.3
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
@@ -28,7 +28,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: make
 #TestRequires: libconfig-devel >= 1.7.2
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-devel >= 21.8.17
+#TestRequires: smartmet-library-spine-devel >= 21.8.30
 #TestRequires: zlib-devel
 
 %if %{defined el7}
@@ -79,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Tue Aug 31 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.8.31-1.fmi
+- Repackaged due to Spine ABI changes
+
 * Tue Aug 17 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.8.17-1.fmi
 - Use latest interface for shutting downg
 
