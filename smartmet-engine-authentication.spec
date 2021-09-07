@@ -26,7 +26,6 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: bzip2-devel
 #TestRequires: gcc-c++
 #TestRequires: make
-#TestRequires: libconfig-devel >= 1.7.2
 #TestRequires: smartmet-library-regression
 #TestRequires: smartmet-library-spine-devel >= 21.8.30
 #TestRequires: zlib-devel
