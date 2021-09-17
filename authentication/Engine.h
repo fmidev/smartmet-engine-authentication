@@ -21,7 +21,7 @@ class Engine : public SmartMet::Spine::SmartMetEngine
 {
  public:
   Engine(const char* theConfigFile);
-  ~Engine();
+  ~Engine() override;
 
   // Query if given apikey has access to a number of token values for a given service
   bool authorize(const std::string& apikey,
@@ -53,8 +53,8 @@ class Engine : public SmartMet::Spine::SmartMetEngine
   int itsActiveThreadCount;
 
  protected:
-  virtual void init();
-  void shutdown();
+  void init() override;
+  void shutdown() override;
 };
 
 }  // namespace Authentication
