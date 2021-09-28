@@ -2,12 +2,15 @@ SUBNAME = authentication
 SPEC = smartmet-engine-$(SUBNAME)
 INCDIR = smartmet/engines/$(SUBNAME)
 
+REQUIRES = configpp
+
 include $(shell echo $${PREFIX-/usr})/share/smartmet/devel/makefile.inc
 
 DEFINES = -DUNIX -D_REENTRANT
 
 LIBS += -L$(libdir) \
 	-lsmartmet-spine \
+	$(REQUIRED_LIBS) \
 	-lboost_thread \
 	-lboost_system \
 	-lpqxx \
