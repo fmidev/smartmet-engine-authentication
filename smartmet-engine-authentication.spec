@@ -28,6 +28,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: make
 #TestRequires: smartmet-library-regression
 #TestRequires: smartmet-library-spine-plugin-test >= 21.9.10
+#TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
 %if %{defined el7}
