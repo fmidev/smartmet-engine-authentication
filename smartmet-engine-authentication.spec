@@ -15,10 +15,10 @@ BuildRequires: boost169-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 21.9.10
+BuildRequires: smartmet-library-spine-devel >= 21.12.2
 Requires: boost169-system
 Requires: boost169-thread
-Requires: smartmet-library-spine >= 21.9.10
+Requires: smartmet-library-spine >= 21.12.2
 Requires: smartmet-server >= 21.6.3
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
@@ -27,7 +27,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: make
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-plugin-test >= 21.9.10
+#TestRequires: smartmet-library-spine-plugin-test >= 21.12.2
 #TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
@@ -36,8 +36,8 @@ Requires: libpqxx < 1:7.0
 BuildRequires: libpqxx-devel < 1:7.0
 %else
 %if %{defined el8}
-Requires: libpqxx >= 5.0.1
-BuildRequires: libpqxx-devel >= 5.0.1
+Requires: libpqxx >= 1:7.6.0, libpqxx < 1:7.7.0
+BuildRequires: libpqxx-devel >= 1:7.6.0, libpqxx-devel < 1:7.7.0
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
@@ -52,6 +52,7 @@ SmartMet Apikey Authorization engine
 Summary: SmartMet %{SPECNAME} development headers
 Group: SmartMet/Development
 Provides: %{SPECNAME}-devel
+Requires: %{SPECNAME} = %{version}-%{release}
 Obsoletes: smartmet-brainstorm-authengine-devel < 16.11.1
 %description -n %{SPECNAME}-devel
 SmartMet %{SPECNAME} development headers.
