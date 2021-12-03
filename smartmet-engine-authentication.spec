@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 21.9.28
+Version: 21.12.3
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
