@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 22.1.21
+Version: 22.5.24
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -15,11 +15,11 @@ BuildRequires: boost169-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 21.1.21
+BuildRequires: smartmet-library-spine-devel >= 22.5.24
 Requires: boost169-system
 Requires: boost169-thread
-Requires: smartmet-library-spine >= 21.1.21
-Requires: smartmet-server >= 21.6.3
+Requires: smartmet-library-spine >= 22.5.24
+Requires: smartmet-server >= 22.5.16
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
@@ -36,8 +36,8 @@ Requires: libpqxx < 1:7.0
 BuildRequires: libpqxx-devel < 1:7.0
 %else
 %if %{defined el8}
-Requires: libpqxx >= 1:7.6.0, libpqxx < 1:7.7.0
-BuildRequires: libpqxx-devel >= 1:7.6.0, libpqxx-devel < 1:7.7.0
+Requires: libpqxx >= 6.2.5 libpqxx < 1:7.7.0
+BuildRequires: libpqxx-devel >= 6.2.5 libpqxx-devel < 1:7.7.0
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
@@ -80,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Tue May 24 2022 Mika Heiskanen <mika.heiskanen@fmi.fi> - 22.5.24-1.fmi
+- Repackaged due to NFmiArea ABI changes
+
 * Fri Jan 21 2022 Andris Pavēnis <andris.pavenis@fmi.fi> 22.1.21-1.fmi
 - Repackage due to upgrade of packages from PGDG repo: gdal-3.4, geos-3.10, proj-8.2
 
