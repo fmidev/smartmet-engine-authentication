@@ -11,14 +11,20 @@ URL: https://github.com/fmidev/smartmet-engine-authentication
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: boost169-devel
+%if 0%{?rhel} && 0%{rhel} < 9
+%define smartmet_boost boost169
+%else
+%define smartmet_boost boost
+%endif
+
+BuildRequires: %{smartmet_boost}-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 22.5.24
-Requires: boost169-system
-Requires: boost169-thread
-Requires: smartmet-library-spine >= 22.5.24
+BuildRequires: smartmet-library-spine-devel >= 22.6.16
+Requires: %{smartmet_boost}-system
+Requires: %{smartmet_boost}-thread
+Requires: smartmet-library-spine >= 22.6.16
 Requires: smartmet-server >= 22.5.16
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
@@ -27,7 +33,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: make
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-plugin-test >= 21.1.21
+#TestRequires: smartmet-library-spine-plugin-test >= 22.6.16
 #TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
@@ -35,9 +41,10 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 Requires: libpqxx < 1:7.0
 BuildRequires: libpqxx-devel < 1:7.0
 %else
-%if %{defined el8}
-Requires: libpqxx >= 6.2.5 libpqxx < 1:7.7.0
-BuildRequires: libpqxx-devel >= 6.2.5 libpqxx-devel < 1:7.7.0
+%if 0%{?rhel} && 0%{rhel} >= 8
+Requires: libpqxx >= 1:7.7.0, libpqxx < 1:7.8.0
+BuildRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
+#TestRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
