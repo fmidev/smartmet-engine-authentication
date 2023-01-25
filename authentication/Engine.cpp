@@ -6,10 +6,6 @@
 #include <stdexcept>
 #include <utility>
 
-//#include <pqxx/pqxx>
-
-#include <stdexcept>
-
 namespace SmartMet
 {
 namespace Engine
@@ -191,7 +187,7 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
   }
 }
 
-Engine::Engine(const char* theConfigFile) : itsConfig(theConfigFile), itsActiveThreadCount(0) {}
+Engine::Engine(const char* theConfigFile) : itsConfig(theConfigFile) {}
 
 bool Engine::authorize(const std::string& apikey,
                        const std::string& tokenvalue,
@@ -288,8 +284,7 @@ void Engine::init()
   {
     rebuildMappings();
 
-    itsUpdateThread =
-        boost::movelib::make_unique<boost::thread>(boost::bind(&Engine::rebuildUpdateLoop, this));
+    itsUpdateThread = boost::movelib::make_unique<boost::thread>([this]() { rebuildUpdateLoop(); });
   }
   catch (...)
   {

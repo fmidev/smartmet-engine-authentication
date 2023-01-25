@@ -23,6 +23,11 @@ class Engine : public SmartMet::Spine::SmartMetEngine
   Engine(const char* theConfigFile);
   ~Engine() override;
 
+  Engine(const Engine& other) = delete;
+  Engine& operator=(const Engine& other) = delete;
+  Engine(Engine&& other) = delete;
+  Engine& operator=(Engine&& other) = delete;
+
   // Query if given apikey has access to a number of token values for a given service
   bool authorize(const std::string& apikey,
                  const std::vector<std::string>& tokenvalues,
@@ -50,7 +55,7 @@ class Engine : public SmartMet::Spine::SmartMetEngine
 
   boost::movelib::unique_ptr<boost::thread> itsUpdateThread;
 
-  int itsActiveThreadCount;
+  int itsActiveThreadCount = 0;
 
  protected:
   void init() override;
