@@ -1,11 +1,8 @@
 #pragma once
 
 #include "Config.h"
-#include <boost/move/unique_ptr.hpp>
+#include <memory>
 #include <spine/SmartMetEngine.h>
-#include <spine/Thread.h>
-#include <map>
-#include <set>
 #include <string>
 #include <vector>
 
@@ -17,11 +14,11 @@ namespace Authentication
 {
 class Service;
 
-class Engine : public SmartMet::Spine::SmartMetEngine
+class Engine final : public SmartMet::Spine::SmartMetEngine
 {
  public:
   Engine(const char* theConfigFile);
-  ~Engine() override;
+  ~Engine() override = default;
 
   Engine(const Engine& other) = delete;
   Engine& operator=(const Engine& other) = delete;
@@ -39,27 +36,22 @@ class Engine : public SmartMet::Spine::SmartMetEngine
                  const std::string& service,
                  bool explicitGrantOnly = false) const;
 
- private:
-  // Rebuilds apikey service mappings
-  void rebuildMappings();
-
-  // Updates mappings in the background
-  void rebuildUpdateLoop();
-
-  Config itsConfig;
-
-  // Service name -> Service definition
-  std::map<std::string, Service> itsServices;
-
-  mutable SmartMet::Spine::MutexType itsMutex;
-
-  boost::movelib::unique_ptr<boost::thread> itsUpdateThread;
-
-  int itsActiveThreadCount = 0;
-
  protected:
   void init() override;
   void shutdown() override;
+
+ private:
+  class Impl;
+  enum class AccessStatus;
+  class Token;
+  struct WildCard;
+  class Service;
+
+ private:
+  Impl& get_impl() const;
+
+ private:
+  std::unique_ptr<Impl> impl;
 };
 
 }  // namespace Authentication

@@ -1,7 +1,11 @@
 #include "Engine.h"
+#include <macgyver/AnsiEscapeCodes.h>
+#include <macgyver/AsyncTask.h>
 #include <macgyver/Exception.h>
 #include <macgyver/PostgreSQLConnection.h>
 #include <macgyver/StringConversion.h>
+#include <macgyver/TypeName.h>
+#include <spine/Convenience.h>
 #include <spine/Reactor.h>
 #include <stdexcept>
 #include <utility>
@@ -15,7 +19,7 @@ namespace Authentication
 const std::string WILDCARD_IDENTIFIER = "*";
 
 // Enum to signify access resolution status
-enum class AccessStatus
+enum class Engine::AccessStatus
 {
   WILDCARD_GRANT,
   GRANT,
@@ -25,7 +29,7 @@ enum class AccessStatus
 
 // Token class
 // Describes a singe authorization token, which has zero or more token values
-class Token
+class Engine::Token
 {
  public:
   explicit Token(std::string name) : itsName(std::move(name)) {}
@@ -49,40 +53,40 @@ class Token
   mutable std::set<std::string> itsValues;  // Hack, because std::set allows only const_iterators
 };
 
-bool Token::addValue(const std::string& value) const
+bool Engine::Token::addValue(const std::string& value) const
 {
   return itsValues.insert(value).second;
 }
-void Token::deleteValue(const std::string& value)
+void Engine::Token::deleteValue(const std::string& value)
 {
   itsValues.erase(value);
 }
-bool Token::hasValue(const std::string& value) const
+bool Engine::Token::hasValue(const std::string& value) const
 {
   return (itsValues.find(value) != itsValues.end());
 }
 
-bool Token::operator<(const Token& other) const
+bool Engine::Token::operator<(const Token& other) const
 {
   return itsName < other.itsName;
 }
-bool Token::operator==(const Token& other) const
+bool Engine::Token::operator==(const Token& other) const
 {
   return itsName == other.itsName;
 }
-bool Token::operator!=(const Token& other) const
+bool Engine::Token::operator!=(const Token& other) const
 {
   return itsName != other.itsName;
 }
 // Type to signify that all token values are valid
-struct WildCard
+struct Engine::WildCard
 {
 };
 
 // Service class
 // Tracks apikey-> token value relationships for a single service definition
 // This object can be queried if a given apikey has access to a number of token values
-class Service
+class Engine::Service
 {
  public:
   explicit Service(std::string name) : itsName(std::move(name)) {}
@@ -106,7 +110,7 @@ class Service
   std::map<std::string, std::set<Token>> itsTokenApikeyMapping;
 };
 
-bool Service::addToken(const std::string& apikey, const Token& token)
+bool Engine::Service::addToken(const std::string& apikey, const Token& token)
 {
   try
   {
@@ -127,7 +131,7 @@ bool Service::addToken(const std::string& apikey, const Token& token)
   }
 }
 
-bool Service::addTokenSet(const std::string& apikey, const std::set<Token>& tokens)
+bool Engine::Service::addTokenSet(const std::string& apikey, const std::set<Token>& tokens)
 {
   try
   {
@@ -139,7 +143,7 @@ bool Service::addTokenSet(const std::string& apikey, const std::set<Token>& toke
   }
 }
 
-bool Service::addWildCard(const std::string& apikey)
+bool Engine::Service::addWildCard(const std::string& apikey)
 {
   try
   {
@@ -151,9 +155,10 @@ bool Service::addWildCard(const std::string& apikey)
   }
 }
 
-AccessStatus Service::resolveAccess(const std::string& apikey,
-                                    const std::string& value,
-                                    bool explicitGrantOnly) const
+Engine::AccessStatus
+Engine::Service::resolveAccess(const std::string& apikey,
+                               const std::string& value,
+                               bool explicitGrantOnly) const
 {
   try
   {
@@ -187,12 +192,99 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
   }
 }
 
-Engine::Engine(const char* theConfigFile) : itsConfig(theConfigFile) {}
+class Engine::Impl final
+{
+public:
+  Impl(const char* theConfigFile);
+
+  ~Impl() = default;
+
+  Impl(const Impl& other) = delete;
+  Impl& operator=(const Impl& other) = delete;
+  Impl(Impl&& other) = delete;
+  Impl& operator=(Impl&& other) = delete;
+
+  void init();
+  void shutdown();
+
+  // Query if given apikey has access to a number of token values for a given service
+  bool authorize(const std::string& apikey,
+                 const std::vector<std::string>& tokenvalues,
+                 const std::string& service) const;
+
+  // Authorize a single value for given service
+  bool authorize(const std::string& apikey,
+                 const std::string& tokenvalue,
+                 const std::string& service,
+                 bool explicitGrantOnly = false) const;
+
+ private:
+  // Rebuilds apikey service mappings
+  void rebuildMappings();
+
+  // Updates mappings in the background
+  void rebuildUpdateLoop();
+
+  Config itsConfig;
+
+  // Service name -> Service definition
+  std::map<std::string, Service> itsServices;
+
+  mutable SmartMet::Spine::MutexType itsMutex;
+
+  std::unique_ptr<Fmi::AsyncTask> itsUpdateTask;
+
+  int itsActiveThreadCount = 0;
+};
+
+Engine::Engine(const char* theConfigFile)
+{
+  if (!theConfigFile || *theConfigFile == 0)
+  {
+    std::cout << Spine::log_time_str() << ' '
+              << ANSI_FG_RED << METHOD_NAME
+              << ": configuration file not specified or its name is empty string: "
+              << "engine disabled." << ANSI_FG_DEFAULT << std::endl;
+    return;
+  }
+
+  SmartMet::Spine::ConfigBase cfg(theConfigFile);
+  const bool disabled = cfg.get_optional_config_param<bool>("disabled", false);
+  if (!disabled)
+    impl.reset(new Impl(theConfigFile));
+}
+
+Engine::Impl::Impl(const char* theConfigFile)
+    : itsConfig(theConfigFile)
+{
+}
+
+Engine::Impl& Engine::get_impl() const
+{
+  if (!impl)
+    throw Fmi::Exception(BCP, "Operation not available: engine disabled");
+  return *impl;
+}
 
 bool Engine::authorize(const std::string& apikey,
                        const std::string& tokenvalue,
                        const std::string& service,
                        bool explicitGrantOnly) const
+{
+  try
+  {
+    return get_impl().authorize(apikey, tokenvalue, service, explicitGrantOnly);
+  }
+  catch (...)
+  {
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
+  }
+}
+
+bool Engine::Impl::authorize(const std::string& apikey,
+                             const std::string& tokenvalue,
+                             const std::string& service,
+                             bool explicitGrantOnly) const
 {
   try
   {
@@ -227,6 +319,20 @@ bool Engine::authorize(const std::string& apikey,
 
 // Grant access if ALL token values are valid
 bool Engine::authorize(const std::string& apikey,
+                       const std::vector<std::string>& tokenvalues,
+                       const std::string& service) const
+{
+  try
+  {
+    return get_impl().authorize(apikey, tokenvalues, service);
+  }
+  catch (...)
+  {
+    throw Fmi::Exception::Trace(BCP, "Operation failed!");
+  }
+}
+
+bool Engine::Impl::authorize(const std::string& apikey,
                        const std::vector<std::string>& tokenvalues,
                        const std::string& service) const
 {
@@ -280,11 +386,19 @@ bool Engine::authorize(const std::string& apikey,
 
 void Engine::init()
 {
+  if (impl)
+    impl->init();
+}
+
+void Engine::Impl::init()
+{
   try
   {
     rebuildMappings();
 
-    itsUpdateThread = boost::movelib::make_unique<boost::thread>([this]() { rebuildUpdateLoop(); });
+    itsUpdateTask.reset(new Fmi::AsyncTask(
+            "Authentication engine update task",
+            [this]() { rebuildUpdateLoop(); }));
   }
   catch (...)
   {
@@ -300,11 +414,21 @@ void Engine::init()
 
 void Engine::shutdown()
 {
+  if (impl)
+    impl->shutdown();
+}
+
+void Engine::Impl::shutdown()
+{
   try
   {
     std::cout << "  -- Shutdown requested (authentication engine)\n";
-    while (itsActiveThreadCount > 0)
-      boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+
+    if (itsUpdateTask) {
+      itsUpdateTask->cancel();
+      itsUpdateTask->wait();
+      itsUpdateTask.reset();
+    }
   }
   catch (...)
   {
@@ -312,7 +436,7 @@ void Engine::shutdown()
   }
 }
 
-void Engine::rebuildUpdateLoop()
+void Engine::Impl::rebuildUpdateLoop()
 {
   try
   {
@@ -341,7 +465,7 @@ void Engine::rebuildUpdateLoop()
   }
 }
 
-void Engine::rebuildMappings()
+void Engine::Impl::rebuildMappings()
 {
   using namespace Fmi::Database;
   try
@@ -440,8 +564,6 @@ void Engine::rebuildMappings()
     throw Fmi::Exception::Trace(BCP, "Operation failed!");
   }
 }
-
-Engine::~Engine() = default;
 
 }  // namespace Authentication
 }  // namespace Engine
