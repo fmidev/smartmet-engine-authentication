@@ -19,7 +19,7 @@ namespace Authentication
 const std::string WILDCARD_IDENTIFIER = "*";
 
 // Enum to signify access resolution status
-enum class Engine::AccessStatus
+enum class AccessStatus
 {
   WILDCARD_GRANT,
   GRANT,
@@ -29,7 +29,7 @@ enum class Engine::AccessStatus
 
 // Token class
 // Describes a singe authorization token, which has zero or more token values
-class Engine::Token
+class Token
 {
  public:
   explicit Token(std::string name) : itsName(std::move(name)) {}
@@ -53,40 +53,40 @@ class Engine::Token
   mutable std::set<std::string> itsValues;  // Hack, because std::set allows only const_iterators
 };
 
-bool Engine::Token::addValue(const std::string& value) const
+bool Token::addValue(const std::string& value) const
 {
   return itsValues.insert(value).second;
 }
-void Engine::Token::deleteValue(const std::string& value)
+void Token::deleteValue(const std::string& value)
 {
   itsValues.erase(value);
 }
-bool Engine::Token::hasValue(const std::string& value) const
+bool Token::hasValue(const std::string& value) const
 {
   return (itsValues.find(value) != itsValues.end());
 }
 
-bool Engine::Token::operator<(const Token& other) const
+bool Token::operator<(const Token& other) const
 {
   return itsName < other.itsName;
 }
-bool Engine::Token::operator==(const Token& other) const
+bool Token::operator==(const Token& other) const
 {
   return itsName == other.itsName;
 }
-bool Engine::Token::operator!=(const Token& other) const
+bool Token::operator!=(const Token& other) const
 {
   return itsName != other.itsName;
 }
 // Type to signify that all token values are valid
-struct Engine::WildCard
+struct WildCard
 {
 };
 
 // Service class
 // Tracks apikey-> token value relationships for a single service definition
 // This object can be queried if a given apikey has access to a number of token values
-class Engine::Service
+class Service
 {
  public:
   explicit Service(std::string name) : itsName(std::move(name)) {}
@@ -110,7 +110,7 @@ class Engine::Service
   std::map<std::string, std::set<Token>> itsTokenApikeyMapping;
 };
 
-bool Engine::Service::addToken(const std::string& apikey, const Token& token)
+bool Service::addToken(const std::string& apikey, const Token& token)
 {
   try
   {
@@ -131,7 +131,7 @@ bool Engine::Service::addToken(const std::string& apikey, const Token& token)
   }
 }
 
-bool Engine::Service::addTokenSet(const std::string& apikey, const std::set<Token>& tokens)
+bool Service::addTokenSet(const std::string& apikey, const std::set<Token>& tokens)
 {
   try
   {
@@ -143,7 +143,7 @@ bool Engine::Service::addTokenSet(const std::string& apikey, const std::set<Toke
   }
 }
 
-bool Engine::Service::addWildCard(const std::string& apikey)
+bool Service::addWildCard(const std::string& apikey)
 {
   try
   {
@@ -155,10 +155,9 @@ bool Engine::Service::addWildCard(const std::string& apikey)
   }
 }
 
-Engine::AccessStatus
-Engine::Service::resolveAccess(const std::string& apikey,
-                               const std::string& value,
-                               bool explicitGrantOnly) const
+AccessStatus Service::resolveAccess(const std::string& apikey,
+                                    const std::string& value,
+                                    bool explicitGrantOnly) const
 {
   try
   {
@@ -194,8 +193,8 @@ Engine::Service::resolveAccess(const std::string& apikey,
 
 class Engine::Impl final
 {
-public:
-  Impl(const char* theConfigFile);
+ public:
+  explicit Impl(const char* theConfigFile);
 
   ~Impl() = default;
 
@@ -241,8 +240,7 @@ Engine::Engine(const char* theConfigFile)
 {
   if (!theConfigFile || *theConfigFile == 0)
   {
-    std::cout << Spine::log_time_str() << ' '
-              << ANSI_FG_RED << METHOD_NAME
+    std::cout << Spine::log_time_str() << ' ' << ANSI_FG_RED << METHOD_NAME
               << ": configuration file not specified or its name is empty string: "
               << "engine disabled." << ANSI_FG_DEFAULT << std::endl;
     return;
@@ -254,10 +252,7 @@ Engine::Engine(const char* theConfigFile)
     impl.reset(new Impl(theConfigFile));
 }
 
-Engine::Impl::Impl(const char* theConfigFile)
-    : itsConfig(theConfigFile)
-{
-}
+Engine::Impl::Impl(const char* theConfigFile) : itsConfig(theConfigFile) {}
 
 Engine::Impl& Engine::get_impl() const
 {
@@ -333,8 +328,8 @@ bool Engine::authorize(const std::string& apikey,
 }
 
 bool Engine::Impl::authorize(const std::string& apikey,
-                       const std::vector<std::string>& tokenvalues,
-                       const std::string& service) const
+                             const std::vector<std::string>& tokenvalues,
+                             const std::string& service) const
 {
   try
   {
@@ -396,9 +391,8 @@ void Engine::Impl::init()
   {
     rebuildMappings();
 
-    itsUpdateTask.reset(new Fmi::AsyncTask(
-            "Authentication engine update task",
-            [this]() { rebuildUpdateLoop(); }));
+    itsUpdateTask.reset(
+        new Fmi::AsyncTask("Authentication engine update task", [this]() { rebuildUpdateLoop(); }));
   }
   catch (...)
   {
@@ -424,7 +418,8 @@ void Engine::Impl::shutdown()
   {
     std::cout << "  -- Shutdown requested (authentication engine)\n";
 
-    if (itsUpdateTask) {
+    if (itsUpdateTask)
+    {
       itsUpdateTask->cancel();
       itsUpdateTask->wait();
       itsUpdateTask.reset();

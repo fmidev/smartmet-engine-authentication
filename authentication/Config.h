@@ -13,7 +13,7 @@ namespace Authentication
 class Config : public SmartMet::Spine::ConfigBase
 {
  public:
-  Config(const std::string& configFile);
+  explicit Config(const std::string& configFile);
 
   std::string dBHost;
 

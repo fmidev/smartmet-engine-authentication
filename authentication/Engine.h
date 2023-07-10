@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Config.h"
-#include <memory>
 #include <spine/SmartMetEngine.h>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -12,12 +12,10 @@ namespace Engine
 {
 namespace Authentication
 {
-class Service;
-
 class Engine final : public SmartMet::Spine::SmartMetEngine
 {
  public:
-  Engine(const char* theConfigFile);
+  explicit Engine(const char* theConfigFile);
   ~Engine() override = default;
 
   Engine(const Engine& other) = delete;
@@ -42,16 +40,8 @@ class Engine final : public SmartMet::Spine::SmartMetEngine
 
  private:
   class Impl;
-  enum class AccessStatus;
-  class Token;
-  struct WildCard;
-  class Service;
-
- private:
-  Impl& get_impl() const;
-
- private:
   std::unique_ptr<Impl> impl;
+  Impl& get_impl() const;
 };
 
 }  // namespace Authentication
