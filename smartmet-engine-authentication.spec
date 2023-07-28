@@ -21,10 +21,10 @@ BuildRequires: %{smartmet_boost}-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 23.6.21
+BuildRequires: smartmet-library-spine-devel >= 23.7.28
 Requires: %{smartmet_boost}-system
 Requires: %{smartmet_boost}-thread
-Requires: smartmet-library-spine >= 23.6.21
+Requires: smartmet-library-spine >= 23.7.28
 Requires: smartmet-server >= 23.5.19
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
@@ -33,7 +33,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: make
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-plugin-test >= 23.6.21
+#TestRequires: smartmet-library-spine-plugin-test >= 23.7.28
 #TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
