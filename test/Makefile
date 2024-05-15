@@ -15,7 +15,6 @@ LIBS += \
 	-lsmartmet-spine \
 	-lsmartmet-gis \
 	-lsmartmet-newbase \
-	-lboost_date_time \
 	-lboost_iostreams \
 	-lboost_filesystem \
 	-lboost_regex \
