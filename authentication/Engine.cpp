@@ -450,7 +450,7 @@ void Engine::Impl::rebuildUpdateLoop()
 
       for (int i = 0; (!Spine::Reactor::isShuttingDown() && i < itsConfig.updateIntervalSeconds);
            i++)
-        boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+        boost::this_thread::sleep_for(boost::chrono::milliseconds(1000));
     }
     itsActiveThreadCount--;
   }
