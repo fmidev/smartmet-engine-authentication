@@ -8,7 +8,7 @@ include $(shell echo $${PREFIX-/usr})/share/smartmet/devel/makefile.inc
 
 DEFINES = -DUNIX -D_REENTRANT
 
-LIBS += -L$(libdir) \
+LIBS += $(PREFIX_LDFLAGS) \
 	-lsmartmet-spine \
 	$(REQUIRED_LIBS) \
 	-lboost_thread \
@@ -59,6 +59,7 @@ $(LIBFILE): $(OBJS)
 clean:
 	rm -f $(LIBFILE) *~ $(SUBNAME)/*~
 	rm -rf obj
+	$(MAKE) -C test $@
 
 format:
 	clang-format -i -style=file $(SUBNAME)/*.h $(SUBNAME)/*.cpp test/*.cpp
