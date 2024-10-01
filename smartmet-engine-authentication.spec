@@ -3,8 +3,8 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 24.8.7
-Release: 2%{?dist}.fmi
+Version: 24.9.28
+Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
 URL: https://github.com/fmidev/smartmet-engine-authentication
@@ -21,10 +21,10 @@ BuildRequires: %{smartmet_boost}-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 24.8.7
+BuildRequires: smartmet-library-spine-devel >= 24.9.28
 Requires: %{smartmet_boost}-system
 Requires: %{smartmet_boost}-thread
-Requires: smartmet-library-spine >= 24.8.7
+Requires: smartmet-library-spine >= 24.9.28
 Requires: smartmet-server >= 24.8.7
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
@@ -33,7 +33,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: make
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-plugin-test >= 24.8.7
+#TestRequires: smartmet-library-spine-plugin-test >= 24.9.28
 #TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
@@ -86,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Sat Sep 28 2024 Mika Heiskanen <mika.heiskanen@fmi.fi> - 24.9.28-1.fmi
+- Repackaged due to PostgreSQLConnection ABI change
+
 * Wed Aug  7 2024 Andris Pavēnis <andris.pavenis@fmi.fi> 24.8.7-2.fmi
 - Fix RPM requires (RHEL9, libpqxx)
 
