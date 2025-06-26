@@ -11,6 +11,9 @@ URL: https://github.com/fmidev/smartmet-engine-authentication
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+# https://fedoraproject.org/wiki/Changes/Broken_RPATH_will_fail_rpmbuild
+%global __brp_check_rpaths %{nil}
+
 %if 0%{?rhel} && 0%{rhel} < 9
 %define smartmet_boost boost169
 %else
@@ -38,15 +41,24 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: zlib-devel
 
 %if 0%{?rhel} && 0%{rhel} == 8
-Requires: libpqxx >= 7.7.0 libpqxx < 1:7.8.0
-BuildRequires: libpqxx-devel >= 7.7.0 libpqxx-devel < 1:7.8.0
+Requires: libpqxx >= 1:7.7.0, libpqxx < 1:7.8.0
+BuildRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
+#TestRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
 %else
-%if 0%{?rhel} && 0%{rhel} >= 9
-Requires: libpqxx >= 7.9.0 libpqxx < 1:8.0.0
-BuildRequires: libpqxx-devel >= 7.9.0 libpqxx-devel < 1:7.10.0
+%if 0%{?rhel} && 0%{rhel} == 9
+Requires: libpqxx >= 1:7.9.0, libpqxx < 1:7.10.0
+BuildRequires: libpqxx-devel >= 1:7.9.0, libpqxx-devel < 1:7.10.0
+#TestRequires: libpqxx-devel >= 1:7.9.0, libpqxx-devel < 1:7.10.0
+%else
+%if 0%{?rhel} && 0%{rhel} >= 10
+Requires: libpqxx >= 1:7.10.0, libpqxx < 1:7.11.0
+BuildRequires: libpqxx-devel >= 1:7.10.0, libpqxx-devel < 1:7.11.0
+#TestRequires: libpqxx-devel >= 1:7.10.0, libpqxx-devel < 1:7.11.0
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
+#TestRequires: libpqxx-devel
+%endif
 %endif
 %endif
 
