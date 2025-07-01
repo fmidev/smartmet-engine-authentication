@@ -191,20 +191,25 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
   }
 }
 
-class Engine::Impl final
+class AuthEngine final : public Engine
 {
- public:
-  explicit Impl(const char* theConfigFile);
+public:
+  explicit AuthEngine(const char* theConfigFile);
 
-  ~Impl() = default;
+  ~AuthEngine() = default;
 
-  Impl(const Impl& other) = delete;
-  Impl& operator=(const Impl& other) = delete;
-  Impl(Impl&& other) = delete;
-  Impl& operator=(Impl&& other) = delete;
+  AuthEngine(const AuthEngine& other) = delete;
+  AuthEngine& operator=(const AuthEngine& other) = delete;
+  AuthEngine(AuthEngine&& other) = delete;
+  AuthEngine& operator=(AuthEngine&& other) = delete;
 
-  void init();
-  void shutdown();
+  void init() override;
+  void shutdown() override;
+
+  bool isEnabled() const override
+  {
+    return true;  // This implementation is for enabled engine
+  }
 
   // Query if given apikey has access to a number of token values for a given service
   bool authorize(const std::string& apikey,
@@ -217,7 +222,7 @@ class Engine::Impl final
                  const std::string& service,
                  bool explicitGrantOnly = false) const;
 
- private:
+private:
   // Rebuilds apikey service mappings
   void rebuildMappings();
 
@@ -236,50 +241,12 @@ class Engine::Impl final
   int itsActiveThreadCount = 0;
 };
 
-Engine::Engine(const char* theConfigFile)
-{
-  if (!theConfigFile || *theConfigFile == 0)
-  {
-    std::cout << Spine::log_time_str() << ' ' << ANSI_FG_RED << METHOD_NAME
-              << ": configuration file not specified or its name is empty string: "
-              << "engine disabled." << ANSI_FG_DEFAULT << std::endl;
-    return;
-  }
+AuthEngine::AuthEngine(const char* theConfigFile) : itsConfig(theConfigFile) {}
 
-  SmartMet::Spine::ConfigBase cfg(theConfigFile);
-  const bool disabled = cfg.get_optional_config_param<bool>("disabled", false);
-  if (!disabled)
-    impl.reset(new Impl(theConfigFile));
-}
-
-Engine::Impl::Impl(const char* theConfigFile) : itsConfig(theConfigFile) {}
-
-Engine::Impl& Engine::get_impl() const
-{
-  if (!impl)
-    throw Fmi::Exception(BCP, "Operation not available: engine disabled");
-  return *impl;
-}
-
-bool Engine::authorize(const std::string& apikey,
-                       const std::string& tokenvalue,
-                       const std::string& service,
-                       bool explicitGrantOnly) const
-{
-  try
-  {
-    return get_impl().authorize(apikey, tokenvalue, service, explicitGrantOnly);
-  }
-  catch (...)
-  {
-    throw Fmi::Exception::Trace(BCP, "Operation failed!");
-  }
-}
-
-bool Engine::Impl::authorize(const std::string& apikey,
-                             const std::string& tokenvalue,
-                             const std::string& service,
-                             bool explicitGrantOnly) const
+bool AuthEngine::authorize(const std::string& apikey,
+                           const std::string& tokenvalue,
+                           const std::string& service,
+                           bool explicitGrantOnly) const
 {
   try
   {
@@ -312,24 +279,9 @@ bool Engine::Impl::authorize(const std::string& apikey,
   }
 }
 
-// Grant access if ALL token values are valid
-bool Engine::authorize(const std::string& apikey,
-                       const std::vector<std::string>& tokenvalues,
-                       const std::string& service) const
-{
-  try
-  {
-    return get_impl().authorize(apikey, tokenvalues, service);
-  }
-  catch (...)
-  {
-    throw Fmi::Exception::Trace(BCP, "Operation failed!");
-  }
-}
-
-bool Engine::Impl::authorize(const std::string& apikey,
-                             const std::vector<std::string>& tokenvalues,
-                             const std::string& service) const
+bool AuthEngine::authorize(const std::string& apikey,
+                           const std::vector<std::string>& tokenvalues,
+                           const std::string& service) const
 {
   try
   {
@@ -379,13 +331,7 @@ bool Engine::Impl::authorize(const std::string& apikey,
   }
 }
 
-void Engine::init()
-{
-  if (impl)
-    impl->init();
-}
-
-void Engine::Impl::init()
+void AuthEngine::init()
 {
   try
   {
@@ -406,13 +352,7 @@ void Engine::Impl::init()
  */
 // ----------------------------------------------------------------------
 
-void Engine::shutdown()
-{
-  if (impl)
-    impl->shutdown();
-}
-
-void Engine::Impl::shutdown()
+void AuthEngine::shutdown()
 {
   try
   {
@@ -431,7 +371,7 @@ void Engine::Impl::shutdown()
   }
 }
 
-void Engine::Impl::rebuildUpdateLoop()
+void AuthEngine::rebuildUpdateLoop()
 {
   try
   {
@@ -460,7 +400,7 @@ void Engine::Impl::rebuildUpdateLoop()
   }
 }
 
-void Engine::Impl::rebuildMappings()
+void AuthEngine::rebuildMappings()
 {
   using namespace Fmi::Database;
   try
@@ -568,7 +508,26 @@ void Engine::Impl::rebuildMappings()
 
 extern "C" void* engine_class_creator(const char* configfile, void* /* user_data */)
 {
-  return new SmartMet::Engine::Authentication::Engine(configfile);
+  if (!configfile || *configfile == 0)
+  {
+    std::cout << SmartMet::Spine::log_time_str() << ' ' << ANSI_FG_RED << "Authentication engine"
+              << ": configuration file not specified or its name is empty string: "
+              << "engine disabled." << ANSI_FG_DEFAULT << std::endl;
+    return new SmartMet::Engine::Authentication::Engine;
+  }
+
+  SmartMet::Spine::ConfigBase cfg(configfile);
+  const bool disabled = cfg.get_optional_config_param<bool>("disabled", false);
+  if (disabled)
+  {
+    std::cout << SmartMet::Spine::log_time_str() << ' ' << ANSI_FG_RED
+              << "Authentication engine is disabled" << ANSI_RESET << std::endl;
+    return new SmartMet::Engine::Authentication::Engine;
+  }
+  else
+  {
+    return new SmartMet::Engine::Authentication::AuthEngine(configfile);
+  }
 }
 
 extern "C" const char* engine_name()
