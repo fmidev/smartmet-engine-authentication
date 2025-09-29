@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 25.7.2
+Version: 25.9.29
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -24,11 +24,11 @@ BuildRequires: %{smartmet_boost}-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 25.2.18
+BuildRequires: smartmet-library-spine-devel >= 25.9.16
 Requires: %{smartmet_boost}-system
 Requires: %{smartmet_boost}-thread
-Requires: smartmet-library-spine >= 25.2.18
-Requires: smartmet-server >= 25.2.18
+Requires: smartmet-library-spine >= 25.9.16
+Requires: smartmet-server >= 25.9.9
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
@@ -36,7 +36,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: make
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-plugin-test >= 25.2.18
+#TestRequires: smartmet-library-spine-plugin-test >= 25.9.16
 #TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
@@ -98,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Mon Sep 29 2025 Mika Heiskanen <mika.heiskanen@fmi.fi> - 25.9.29-1.fmi
+- Fixed compiler warnings
+
 * Wed Jul  2 2025 Andris Pavēnis <andris.pavenis@fmi.fi> 25.7.2-1.fmi
 - Support disabling engine
 
