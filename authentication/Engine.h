@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Config.h"
-#include <spine/SmartMetEngine.h>
 #include <macgyver/Exception.h>
-#include <memory>
+#include <spine/SmartMetEngine.h>
 #include <string>
 #include <vector>
 
@@ -16,8 +14,8 @@ namespace Authentication
 class Engine : public SmartMet::Spine::SmartMetEngine
 {
  public:
-  Engine() {};
-  ~Engine() override = default;
+  Engine() = default;
+  ~Engine() override;
 
   Engine(const Engine& other) = delete;
   Engine& operator=(const Engine& other) = delete;
@@ -31,8 +29,8 @@ class Engine : public SmartMet::Spine::SmartMetEngine
 
   // Query if given apikey has access to a number of token values for a given service
   virtual bool authorize(const std::string& apikey,
-                 const std::vector<std::string>& tokenvalues,
-                 const std::string& service) const
+                         const std::vector<std::string>& tokenvalues,
+                         const std::string& service) const
   {
     (void)apikey;
     (void)tokenvalues;
@@ -42,9 +40,9 @@ class Engine : public SmartMet::Spine::SmartMetEngine
 
   // Authorize a single value for given service
   virtual bool authorize(const std::string& apikey,
-                 const std::string& tokenvalue,
-                 const std::string& service,
-                 bool explicitGrantOnly = false) const
+                         const std::string& tokenvalue,
+                         const std::string& service,
+                         bool explicitGrantOnly = false) const
   {
     (void)apikey;
     (void)tokenvalue;
@@ -52,7 +50,8 @@ class Engine : public SmartMet::Spine::SmartMetEngine
     (void)explicitGrantOnly;
     throw Fmi::Exception(BCP, "Not implemented");
   }
-protected:
+
+ protected:
   void init() override {}
   void shutdown() override {}
 };

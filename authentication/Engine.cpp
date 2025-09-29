@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Config.h"
 #include <macgyver/AnsiEscapeCodes.h>
 #include <macgyver/AsyncTask.h>
 #include <macgyver/Exception.h>
@@ -7,7 +8,6 @@
 #include <macgyver/TypeName.h>
 #include <spine/Convenience.h>
 #include <spine/Reactor.h>
-#include <stdexcept>
 #include <utility>
 
 namespace SmartMet
@@ -19,7 +19,7 @@ namespace Authentication
 const std::string WILDCARD_IDENTIFIER = "*";
 
 // Enum to signify access resolution status
-enum class AccessStatus
+enum class AccessStatus : std::uint8_t
 {
   WILDCARD_GRANT,
   GRANT,
@@ -191,12 +191,14 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
   }
 }
 
+Engine::~Engine() = default;
+
 class AuthEngine final : public Engine
 {
-public:
+ public:
   explicit AuthEngine(const char* theConfigFile);
 
-  ~AuthEngine() = default;
+  ~AuthEngine() override = default;
 
   AuthEngine(const AuthEngine& other) = delete;
   AuthEngine& operator=(const AuthEngine& other) = delete;
@@ -222,7 +224,7 @@ public:
                  const std::string& service,
                  bool explicitGrantOnly = false) const override;
 
-private:
+ private:
   // Rebuilds apikey service mappings
   void rebuildMappings();
 
@@ -512,7 +514,7 @@ extern "C" void* engine_class_creator(const char* configfile, void* /* user_data
   {
     std::cout << SmartMet::Spine::log_time_str() << ' ' << ANSI_FG_RED << "Authentication engine"
               << ": configuration file not specified or its name is empty string: "
-              << "engine disabled." << ANSI_FG_DEFAULT << std::endl;
+              << "engine disabled." << ANSI_FG_DEFAULT << '\n';
     return new SmartMet::Engine::Authentication::Engine;
   }
 
@@ -521,13 +523,11 @@ extern "C" void* engine_class_creator(const char* configfile, void* /* user_data
   if (disabled)
   {
     std::cout << SmartMet::Spine::log_time_str() << ' ' << ANSI_FG_RED
-              << "Authentication engine is disabled" << ANSI_RESET << std::endl;
+              << "Authentication engine is disabled" << ANSI_RESET << '\n';
     return new SmartMet::Engine::Authentication::Engine;
   }
-  else
-  {
-    return new SmartMet::Engine::Authentication::AuthEngine(configfile);
-  }
+
+  return new SmartMet::Engine::Authentication::AuthEngine(configfile);
 }
 
 extern "C" const char* engine_name()

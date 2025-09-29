@@ -7,6 +7,9 @@ namespace Engine
 {
 namespace Authentication
 {
+
+Config::~Config() = default;
+
 Config::Config(const std::string& configFile) : ConfigBase(configFile)
 {
   try
