@@ -15,7 +15,6 @@ class Engine : public SmartMet::Spine::SmartMetEngine
 {
  public:
   Engine() = default;
-  ~Engine() override;
 
   Engine(const Engine& other) = delete;
   Engine& operator=(const Engine& other) = delete;

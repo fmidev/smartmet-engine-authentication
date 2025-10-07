@@ -191,8 +191,6 @@ AccessStatus Service::resolveAccess(const std::string& apikey,
   }
 }
 
-Engine::~Engine() = default;
-
 class AuthEngine final : public Engine
 {
  public:
