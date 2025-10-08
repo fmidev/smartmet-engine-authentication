@@ -13,8 +13,11 @@ namespace Authentication
 {
 class Engine : public SmartMet::Spine::SmartMetEngine
 {
+  // NOTICE: entire implementation of this base class must be located in the header file
+  // to avoid plugin loading errors when engine is referenced but not configured to be used.
  public:
   Engine() = default;
+  ~Engine() override = default;
 
   Engine(const Engine& other) = delete;
   Engine& operator=(const Engine& other) = delete;
