@@ -6,7 +6,7 @@
 
 using namespace std;
 
-SmartMet::Engine::Authentication::Engine *authengine;
+std::shared_ptr<SmartMet::Engine::Authentication::Engine> authengine;
 std::string apikey = "testkey";
 std::string apikey2 = "testkey2";
 std::string apikey_wildcard = "testkey_wildcard";
@@ -146,10 +146,12 @@ int main(void)
 
   SmartMet::Spine::Reactor reactor(opts);
   reactor.init();
-  authengine = reinterpret_cast<SmartMet::Engine::Authentication::Engine *>(
-      reactor.getSingleton("Authentication", NULL));
+  authengine = reactor.getEngine<SmartMet::Engine::Authentication::Engine>("Authentication", NULL);
 
   cout << endl << "Engine tester" << endl << "=============" << endl;
   Tests::tests t;
-  return t.run();
+  auto result = t.run();
+  authengine.reset();
+  reactor.shutdown();
+  return result;
 }
