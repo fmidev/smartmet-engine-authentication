@@ -15,12 +15,12 @@ LIBS += \
 	-lsmartmet-spine \
 	-lsmartmet-gis \
 	-lsmartmet-newbase \
+	-lsmartmet-macgyver \
 	-lboost_iostreams \
 	-lboost_filesystem \
 	-lboost_regex \
 	-lboost_thread \
 	-lboost_timer \
-	-lboost_system \
 	$(CONFIGPP_LIBS) \
 	-lbz2 -ljpeg -lpng -lz \
 	-lpthread

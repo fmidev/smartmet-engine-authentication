@@ -12,7 +12,6 @@ LIBS += $(PREFIX_LDFLAGS) \
 	-lsmartmet-spine \
 	$(REQUIRED_LIBS) \
 	-lboost_thread \
-	-lboost_system \
 	-lpqxx \
 	-lconfig++ \
 	-lpthread
