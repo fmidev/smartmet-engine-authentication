@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 26.2.4
+Version: 26.4.13
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -24,11 +24,11 @@ BuildRequires: %{smartmet_boost}-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 26.2.4
+BuildRequires: smartmet-library-spine-devel >= 26.4.13
 Requires: %{smartmet_boost}-system
 Requires: %{smartmet_boost}-thread
-Requires: smartmet-library-spine >= 26.2.4
-Requires: smartmet-server >= 26.2.4
+Requires: smartmet-library-spine >= 26.4.13
+Requires: smartmet-server >= 26.4.13
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
@@ -36,7 +36,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: make
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-plugin-test >= 26.2.4
+#TestRequires: smartmet-library-spine-plugin-test >= 26.4.13
 #TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
@@ -98,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Mon Apr 13 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> - 26.4.13-1.fmi
+- Repackaged due to API changes
+
 * Wed Feb  4 2026 Andris Pavēnis <andris.pavenis@fmi.fi> 26.2.4-1.fmi
 - Update to proj-9.7, gdal-3.12, fmt-12
 
