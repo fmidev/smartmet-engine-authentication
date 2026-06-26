@@ -338,7 +338,7 @@ void AuthEngine::init()
     rebuildMappings();
 
     itsUpdateTask.reset(
-        new Fmi::AsyncTask("Authentication engine update task", [this]() { rebuildUpdateLoop(); }));
+        new Fmi::AsyncTask("upd-auth", [this]() { rebuildUpdateLoop(); }));
   }
   catch (...)
   {
