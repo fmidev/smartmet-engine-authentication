@@ -113,8 +113,37 @@ void access_denied()
     TEST_FAILED("Incorrectly has access to 'value4' token value");
 
   has_access = authengine->authorize(apikey, "value1", "nonexistent_service");
-  if (!has_access)
-    TEST_FAILED("Incorrectly no access to 'nonexistent_service' service");
+  if (has_access)
+    TEST_FAILED("Unknown service should be denied (default policy is DENY)");
+
+  TEST_PASSED();
+}
+
+void unknown_service()
+{
+  bool has_access;
+
+  // With authentication enabled and default_access_is_allow = false, an unknown service must
+  // fail closed for both the single-value and the multi-value authorize() overloads, for both
+  // known and unknown apikeys.
+
+  has_access = authengine->authorize(apikey, "value1", "nonexistent_service");
+  if (has_access)
+    TEST_FAILED("Known apikey wrongly granted access to unknown service (single value)");
+
+  has_access = authengine->authorize("foobar", "value1", "nonexistent_service");
+  if (has_access)
+    TEST_FAILED("Unknown apikey wrongly granted access to unknown service (single value)");
+
+  std::vector<std::string> values = {"value1", "value2"};
+
+  has_access = authengine->authorize(apikey, values, "nonexistent_service");
+  if (has_access)
+    TEST_FAILED("Known apikey wrongly granted access to unknown service (value set)");
+
+  has_access = authengine->authorize("foobar", values, "nonexistent_service");
+  if (has_access)
+    TEST_FAILED("Unknown apikey wrongly granted access to unknown service (value set)");
 
   TEST_PASSED();
 }
@@ -132,6 +161,7 @@ class tests : public tframe::tests
     TEST(access_denied);
     TEST(access_wildcard);
     TEST(unknown_apikey);
+    TEST(unknown_service);
   }
 
 };  // class tests

@@ -269,9 +269,10 @@ bool AuthEngine::authorize(const std::string& apikey,
           return true;
       }
     }
-    else  // Unkown service, either there is a plugin programming error or no access tokens are
-          // defined for this service
-      return !explicitGrantOnly;
+    // Unknown service: either there is a plugin programming error or no access tokens are
+    // defined for this service. Fail closed (default deny) unless an explicit allow-by-default
+    // policy is configured, and never grant when explicit grants are required.
+    return itsConfig.defaultAccessAllow && !explicitGrantOnly;
   }
   catch (...)
   {
@@ -289,7 +290,9 @@ bool AuthEngine::authorize(const std::string& apikey,
 
     auto it = itsServices.find(service);
     if (it == itsServices.end())
-      return true;  // Unknown service, let through
+      // Unknown service: fail closed (default deny) unless an explicit allow-by-default policy
+      // is configured.
+      return itsConfig.defaultAccessAllow;
 
     for (const std::string& value : tokenvalues)
     {
