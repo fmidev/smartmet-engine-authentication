@@ -55,7 +55,6 @@ The decision, in order:
 
 | Situation | Single value | List of values |
 |-----------|--------------|----------------|
-| service has no rules at all | allow, unless `explicitGrantOnly` | **allow** |
 | API key unknown for the service | `default_access_is_allow`; deny with `explicitGrantOnly` | `default_access_is_allow` |
 | key has the wildcard token | allow (unless `explicitGrantOnly`) | allow |
 | value granted by one of the key's tokens | allow | continue with the next value |
@@ -88,12 +87,7 @@ the end of the class only.
 
 ## 7. Known pitfalls
 
-* **Services without rules fail open.** A service name with no rows in the token table (a
-  typo in a plugin, or a service whose rules were never loaded) allows every request. The
-  list form always allows; the single-value form allows unless `explicitGrantOnly` is set.
-  The unmerged `origin/security` branch changes this ("fails open for unknown services");
-  update this section when it is merged.
-* **`default_access_is_allow = true` makes unknown keys pass.** Only keys that appear in the
-  auth table for the service are restricted.
-* **The wildcard token bypasses the value checks** for that service.
+* **`default_access_is_allow`** decides what API keys unknown to a service get; choose it
+  per deployment.
+* **The wildcard token grants every value** of the service.
 * **Refresh latency.** Revoking a key takes effect at the next refresh.
