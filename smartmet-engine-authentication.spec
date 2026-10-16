@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 26.9.26
+Version: 26.10.16
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -24,11 +24,11 @@ BuildRequires: %{smartmet_boost}-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
-BuildRequires: smartmet-library-spine-devel >= 26.6.24
+BuildRequires: smartmet-library-spine-devel >= 26.10.16
 Requires: %{smartmet_boost}-system
 Requires: %{smartmet_boost}-thread
-Requires: smartmet-library-spine >= 26.6.24
-Requires: smartmet-server >= 26.6.24
+Requires: smartmet-library-spine >= 26.10.16
+Requires: smartmet-server >= 26.10.16
 Provides: %{SPECNAME}
 Obsoletes: smartmet-brainstorm-authengine < 16.11.1
 Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
@@ -36,7 +36,7 @@ Obsoletes: smartmet-brainstorm-authengine-debuginfo < 16.11.1
 #TestRequires: gcc-c++
 #TestRequires: make
 #TestRequires: smartmet-library-regression
-#TestRequires: smartmet-library-spine-plugin-test >= 26.6.24
+#TestRequires: smartmet-library-spine-plugin-test >= 26.10.16
 #TestRequires: smartmet-utils-devel
 #TestRequires: zlib-devel
 
@@ -98,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Fri Oct 16 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> - 26.10.16-1.fmi
+- Rebuilt due to ABI changes in macgyver, spine, newbase and other libraries
+
 * Sat Sep 26 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> 26.9.26-1.fmi
 - Security: authorization now fails closed for unknown services (default deny unless default_access_is_allow is set)
 
