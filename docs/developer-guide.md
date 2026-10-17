@@ -55,6 +55,7 @@ The decision, in order:
 
 | Situation | Single value | List of values |
 |-----------|--------------|----------------|
+| service unknown (no tokens defined for it) | `default_access_is_allow`; deny with `explicitGrantOnly` | `default_access_is_allow` |
 | API key unknown for the service | `default_access_is_allow`; deny with `explicitGrantOnly` | `default_access_is_allow` |
 | key has the wildcard token | allow (unless `explicitGrantOnly`) | allow |
 | value granted by one of the key's tokens | allow | continue with the next value |
@@ -79,6 +80,8 @@ takes the read lock. A failed refresh is printed, and the previous rules stay in
 | `database.update_interval_seconds` | Refresh period. |
 | `default_access_is_allow` | Policy for API keys the service does not know. |
 | `disabled` | Load the header-only base engine instead. |
+
+All settings except `disabled` are required.
 
 ## 6. Compatibility
 

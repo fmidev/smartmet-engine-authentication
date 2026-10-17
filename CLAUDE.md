@@ -42,7 +42,7 @@ These are loaded into an in-memory hierarchy: `AuthEngine` -> `Service` -> `Toke
 
 1. Plugin calls `authorize(apikey, tokenvalue(s), service)`
 2. Read lock acquired on `itsMutex`
-3. Service looked up; wildcard API keys get immediate grant
+3. Service looked up (an unknown service gets the `defaultAccessAllow` policy, never a grant with `explicitGrantOnly`); wildcard API keys get immediate grant
 4. For known API keys, each requested value is checked against the token sets
 5. Unknown API keys fall back to `defaultAccessAllow` config setting
 6. `explicitGrantOnly` parameter bypasses wildcard and unknown-key defaults
