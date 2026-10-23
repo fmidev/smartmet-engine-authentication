@@ -3,7 +3,7 @@
 %define SPECNAME smartmet-engine-%{DIRNAME}
 Summary: SmartMet Apikey Authorization engine
 Name: %{SPECNAME}
-Version: 26.10.17
+Version: 26.10.23
 Release: 1%{?dist}.fmi
 License: MIT
 Group: SmartMet/Engines
@@ -24,9 +24,11 @@ BuildRequires: %{smartmet_boost}-devel
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: rpm-build
+BuildRequires: smartmet-library-macgyver-devel >= 26.10.23
 BuildRequires: smartmet-library-spine-devel >= 26.10.16
 Requires: %{smartmet_boost}-system
 Requires: %{smartmet_boost}-thread
+Requires: smartmet-library-macgyver >= 26.10.23
 Requires: smartmet-library-spine >= 26.10.17
 Requires: smartmet-server >= 26.10.17
 Provides: %{SPECNAME}
@@ -98,6 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/engines/%{DIRNAME}
 
 %changelog
+* Fri Oct 23 2026 Pertti Kinnia <pertti.kinnia@fmi.fi> - 26.10.23-1.fmi
+- Repackage due to macgyver ABI changes (PostgreSQLConnectionOptions)
+
 * Sat Oct 17 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> - 26.10.17-1.fmi
 - Rebuilt against the new library versions
 
