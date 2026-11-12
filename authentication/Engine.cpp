@@ -1,13 +1,21 @@
 #include "Engine.h"
 #include "Config.h"
+#include <boost/thread.hpp>
 #include <macgyver/AnsiEscapeCodes.h>
 #include <macgyver/AsyncTask.h>
 #include <macgyver/Exception.h>
 #include <macgyver/PostgreSQLConnection.h>
-#include <macgyver/StringConversion.h>
-#include <macgyver/TypeName.h>
+#include <spine/ConfigBase.h>
 #include <spine/Convenience.h>
 #include <spine/Reactor.h>
+#include <spine/Thread.h>
+#include <cstdint>
+#include <functional>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <pqxx/pqxx>
+#include <set>
 #include <utility>
 
 namespace SmartMet

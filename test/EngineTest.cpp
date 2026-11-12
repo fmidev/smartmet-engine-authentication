@@ -1,8 +1,13 @@
+#include "../authentication/Engine.h"
 #include "Engine.h"
 #include <regression/tframe.h>
-
 #include <spine/Options.h>
 #include <spine/Reactor.h>
+#include <cstddef>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
 using namespace std;
 
